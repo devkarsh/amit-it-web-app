@@ -29,20 +29,14 @@ public class Course {
 	private String duration;
 	private String description;
 
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-	private List<Batch> batches;
-
 	@ManyToMany(mappedBy = "courses")
 	private List<User> users;
-
-<<<<<<< HEAD
 	@OneToOne(mappedBy = "course_id", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Syllabus syllabus;
-=======
+
     // One-to-Many relationship with batches: One course can have many batches
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Batch> batches;
->>>>>>> 0bc8f0077e9e24b2272d45a1aff4bea5518b0b14
 
 }
