@@ -35,7 +35,7 @@ public class Course {
     private String description;
 
     // One-to-Many relationship with batches: One course can have many batches
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Batch> batches;
 
     // Many-to-Many with User (students enrolled in this course)
