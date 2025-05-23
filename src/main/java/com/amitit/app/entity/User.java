@@ -11,12 +11,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
 	@Id
@@ -27,38 +31,17 @@ public class User {
 	private String email;
 	private String password;
 	private String address;
-	
-	@Column(name = "contact_number")
+
 	private int contactNumber;
 	private String adhar;
-	@Column(name = "photo_id")
 	private String photoId;
 
-	// Many users to one batch
 	@ManyToOne
-	@JoinColumn(name = "batch_id") 
+	@JoinColumn(name = "batch_id")
 	private Batch batch;
 
-	// Many-to-many with Course
 	@ManyToMany
 	@JoinTable(name = "user_courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private Set<Course> courses;
-
-	
-	public User() {}
-	
-//	public User(int userId, String name, String email, String password, String address, int contactNumber, String adhar,
-//			String photoId, Batch batch, Set<Course> courses) {
-//		this.userId = userId;
-//		this.name = name;
-//		this.email = email;
-//		this.password = password;
-//		this.address = address;
-//		this.contactNumber = contactNumber;
-//		this.adhar = adhar;
-//		this.photoId = photoId;
-//		this.batch = batch;
-//		this.courses = courses;
-//	}
 
 }

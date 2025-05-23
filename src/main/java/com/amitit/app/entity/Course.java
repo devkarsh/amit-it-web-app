@@ -1,10 +1,10 @@
 package com.amitit.app.entity;
 
 import java.util.List;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,31 +21,22 @@ import lombok.Setter;
 @Getter
 public class Course {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(name = "name", nullable = false) // "name" column; cannot be null
-    private String name;
+	private String name;
+	private String duration;
+	private String description;
 
-    @Column(name = "duration") 
-    private String duration;
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+	private List<Batch> batches;
 
-    @Column(name = "description") // 
-    private String description;
+	@ManyToMany(mappedBy = "courses")
+	private List<User> users;
 
-    // One-to-Many relationship with batches: One course can have many batches
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Batch> batches;
+	@OneToOne(mappedBy = "course_id", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Syllabus syllabus;
 
-    // Many-to-Many with User (students enrolled in this course)
-    @ManyToMany(mappedBy = "courses")
-    private List<User> users;
-
-    @OneToOne
-    @JoinColumn(name = "syllabus_id") 
-    private Syllabus syllabus;
-
-    
 }
-
