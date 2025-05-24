@@ -1,15 +1,14 @@
-package com.amitit.webapp.model;
+package com.amitit.webapp.entity;
 
-import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,27 +17,26 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Batch {
+@Table(name = "users")
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long bid;
+	private Long uid;
 	
 	private String name;
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private String time;
-	private Double fees;
-	private Integer seats;
+	private String email;
+	private String password;
+//	private String address;
+	private String contact;
 	
-	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
+//	@Column(name = "aadhaar_no")
+	private String aadhaarNo;
 	
-	@OneToMany(mappedBy = "batch")
-	private List<Video> videos;
+//	@Column(name = "photo_id")
+	private String photoId;
 	
-	@OneToMany(mappedBy = "batch")
+	@OneToMany(mappedBy = "user")
 	private List<Enrollment> enrollments;
 
 }

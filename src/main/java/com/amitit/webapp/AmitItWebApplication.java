@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ELearningProjectApplication {
+public class AmitItWebApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ELearningProjectApplication.class, args);
+		SpringApplication.run(AmitItWebApplication.class, args);
 	}
 
 }

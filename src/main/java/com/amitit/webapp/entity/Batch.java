@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.amitit.webapp.entity;
 
 import java.time.LocalDate;
 import java.util.List;
