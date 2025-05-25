@@ -29,6 +29,7 @@ public class User {
 	private String password;
 //	private String address;
 	private String contact;
+	// This is sample comment
 	
 //	@Column(name = "aadhaar_no")
 	private String aadhaarNo;
