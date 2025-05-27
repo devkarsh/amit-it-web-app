@@ -3,9 +3,9 @@ package com.amitit.webapp.service;
 import com.amitit.webapp.entity.Syllabus;
 
 public interface SyllabusService {
-	void addSyllabus(Syllabus syllabus);
+	Syllabus addSyllabus(Syllabus syllabus);
 
-	Syllabus getSyllabus(Long sId);
+	Syllabus getSyllabus(Integer sId);
 
-	void deleteSyllabus(Long sId);
+	void deleteSyllabus(Integer sId);
 }

@@ -19,24 +19,23 @@ import com.amitit.webapp.service.SyllabusService;
 public class SyllabusController {
 
 	@Autowired
-	SyllabusService syllabusService;
+	private SyllabusService syllabusService;
 
 	@PostMapping
-	public ResponseEntity<String> addSyllabus(@RequestBody Syllabus syllabus) {
-			syllabusService.addSyllabus(syllabus);
-			return new ResponseEntity<>("Syllabus added successfully!", HttpStatus.CREATED);
+	public ResponseEntity<Syllabus> addSyllabus(@RequestBody Syllabus syllabus) {
+		Syllabus savedSyllabus = syllabusService.addSyllabus(syllabus);
+		return new ResponseEntity<>(savedSyllabus, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{sId}")
-	public ResponseEntity<Syllabus> getSyllabus(@PathVariable Long sId) {
+	public ResponseEntity<Syllabus> getSyllabus(@PathVariable Integer sId) {
 		Syllabus syllabus = syllabusService.getSyllabus(sId);
-			return new ResponseEntity<>(syllabus, HttpStatus.OK);
+		return new ResponseEntity<>(syllabus, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{sId}")
-	public ResponseEntity<String> deleteSyllabus(@PathVariable Long sId) {
-			syllabusService.deleteSyllabus(sId);
-			return new ResponseEntity<>("Syllabus deleted successfully!", HttpStatus.NO_CONTENT);
+	public ResponseEntity<Void> deleteSyllabus(@PathVariable Integer sId) {
+		syllabusService.deleteSyllabus(sId);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
 }
