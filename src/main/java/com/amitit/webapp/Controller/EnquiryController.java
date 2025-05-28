@@ -43,7 +43,7 @@ public class EnquiryController {
 	    @DeleteMapping("enquiry/{id}")
 	    public ResponseEntity<String> deleteEnquiry(@PathVariable  int id) {
 	        enquiryService.deleteEnquiryById(id);
-	        return  new ResponseEntity<>("Enquiry deleted successfully!",HttpStatus.OK);
+	        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	    }
 
 
