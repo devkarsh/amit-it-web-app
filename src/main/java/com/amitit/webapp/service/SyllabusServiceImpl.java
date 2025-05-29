@@ -37,7 +37,7 @@ public class SyllabusServiceImpl implements SyllabusService {
 	public Syllabus getSyllabus(int sId) {
 		logger.info(SyllabusConstant.LOG_ATTEMPT_RETRIEVE, sId);
 		try {
-			Optional<Syllabus> syllabusOptional = syllabusRepository.findById((long) sId);
+			Optional<Syllabus> syllabusOptional = syllabusRepository.findById(sId);
 			if (syllabusOptional.isPresent()) {
 				Syllabus syllabus = syllabusOptional.get();
 				logger.info(SyllabusConstant.LOG_RETRIEVE_SUCCESS, sId, syllabus);
@@ -48,7 +48,7 @@ public class SyllabusServiceImpl implements SyllabusService {
 			}
 		} catch (Exception e) {
 			logger.error(SyllabusConstant.LOG_ERROR_RETRIEVE, sId, e);
-			throw new SyllabusServiceException(SyllabusConstant.ERROR_RETRIEVE_SYLLABUS, HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new SyllabusServiceException(SyllabusConstant.ERROR_RETRIEVE_SYLLABUS, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -56,11 +56,11 @@ public class SyllabusServiceImpl implements SyllabusService {
 	public void deleteSyllabus(int sId) {
 		logger.info(SyllabusConstant.LOG_ATTEMPT_DELETE, sId);
 		try {
-			syllabusRepository.deleteById((long) sId);
+			syllabusRepository.deleteById(sId);
 			logger.info(SyllabusConstant.LOG_DELETE_SUCCESS, sId);
 		} catch (Exception e) {
 			logger.error(SyllabusConstant.LOG_ERROR_DELETE, sId, e);
-			if (!syllabusRepository.existsById((long) sId)) {
+			if (!syllabusRepository.existsById( sId)) {
 				logger.warn(SyllabusConstant.LOG_DELETE_NON_EXISTENT, sId);
 				throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
 			} else {

@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.amitit.webapp.entity.Syllabus;
 
-public interface SyllabusRepository extends JpaRepository<Syllabus, Long> {
+public interface SyllabusRepository extends JpaRepository<Syllabus, Integer> {
 
 }
