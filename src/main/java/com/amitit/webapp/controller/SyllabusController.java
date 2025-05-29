@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amitit.webapp.entity.Syllabus;
 import com.amitit.webapp.service.SyllabusService;
 
+
 @RestController
 @RequestMapping("/syllabus")
 public class SyllabusController {
@@ -22,19 +23,18 @@ public class SyllabusController {
 	private SyllabusService syllabusService;
 
 	@PostMapping
-	public ResponseEntity<Syllabus> addSyllabus(@RequestBody Syllabus syllabus) {
-		Syllabus savedSyllabus = syllabusService.addSyllabus(syllabus);
-		return new ResponseEntity<>(savedSyllabus, HttpStatus.CREATED);
+	public ResponseEntity<Void> addSyllabus(@RequestBody Syllabus syllabus) {
+		syllabusService.addSyllabus(syllabus);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{sId}")
-	public ResponseEntity<Syllabus> getSyllabus(@PathVariable Integer sId) {
-		Syllabus syllabus = syllabusService.getSyllabus(sId);
-		return new ResponseEntity<>(syllabus, HttpStatus.OK);
+	public ResponseEntity<Syllabus> getSyllabus(@PathVariable int sId) {
+		return new ResponseEntity<>(syllabusService.getSyllabus(sId), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{sId}")
-	public ResponseEntity<Void> deleteSyllabus(@PathVariable Integer sId) {
+	public ResponseEntity<Void> deleteSyllabus(@PathVariable int sId) {
 		syllabusService.deleteSyllabus(sId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

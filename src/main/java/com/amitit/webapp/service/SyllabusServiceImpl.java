@@ -2,57 +2,70 @@ package com.amitit.webapp.service;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.amitit.webapp.entity.Syllabus;
+import com.amitit.webapp.exception.SyllabusServiceException;
 import com.amitit.webapp.repository.SyllabusRepository;
+import com.amitit.webapp.constant.SyllabusConstant;
 
 @Service
 public class SyllabusServiceImpl implements SyllabusService {
+
+	private static final Logger logger = LoggerFactory.getLogger(SyllabusServiceImpl.class);
 
 	@Autowired
 	private SyllabusRepository syllabusRepository;
 
 	@Override
-	public Syllabus addSyllabus(Syllabus syllabus) {
+	public void addSyllabus(Syllabus syllabus) {
+		logger.info(SyllabusConstant.LOG_ATTEMPT_ADD, syllabus);
 		try {
-			return syllabusRepository.save(syllabus);
-		} catch (DataAccessException e) {
-			System.err.println("Error saving syllabus: " + e.getMessage());
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-					"Failed to save syllabus due to a data access issue", e);
+			syllabusRepository.save(syllabus);
+			logger.info(SyllabusConstant.LOG_ADD_SUCCESS, syllabus.getSId());
 		} catch (Exception e) {
-			System.err.println("Unexpected error while saving syllabus: " + e.getMessage());
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-					"An unexpected error occurred while saving the syllabus", e);
+			logger.error(SyllabusConstant.LOG_ERROR_SAVE, e);
+			throw new SyllabusServiceException(SyllabusConstant.ERROR_SAVE_SYLLABUS, HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@Override
-	public Syllabus getSyllabus(Integer sId) {
-		Optional<Syllabus> syllabusOptional = syllabusRepository.findById(Long.valueOf(sId));
-		if (syllabusOptional.isPresent()) {
-			return syllabusOptional.get();
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Syllabus with ID " + sId + " not found");
+	public Syllabus getSyllabus(int sId) {
+		logger.info(SyllabusConstant.LOG_ATTEMPT_RETRIEVE, sId);
+		try {
+			Optional<Syllabus> syllabusOptional = syllabusRepository.findById((long) sId);
+			if (syllabusOptional.isPresent()) {
+				Syllabus syllabus = syllabusOptional.get();
+				logger.info(SyllabusConstant.LOG_RETRIEVE_SUCCESS, sId, syllabus);
+				return syllabus;
+			} else {
+				logger.warn(SyllabusConstant.LOG_NOT_FOUND, sId);
+				throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			logger.error(SyllabusConstant.LOG_ERROR_RETRIEVE, sId, e);
+			throw new SyllabusServiceException(SyllabusConstant.ERROR_RETRIEVE_SYLLABUS, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@Override
-	public void deleteSyllabus(Integer sId) {
+	public void deleteSyllabus(int sId) {
+		logger.info(SyllabusConstant.LOG_ATTEMPT_DELETE, sId);
 		try {
-			syllabusRepository.deleteById(Long.valueOf(sId));
-		} catch (EmptyResultDataAccessException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Syllabus with ID " + sId + " not found", e);
+			syllabusRepository.deleteById((long) sId);
+			logger.info(SyllabusConstant.LOG_DELETE_SUCCESS, sId);
 		} catch (Exception e) {
-			System.err.println("Error deleting syllabus with ID " + sId + ": " + e.getMessage());
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-					"An error occurred while deleting the syllabus", e);
+			logger.error(SyllabusConstant.LOG_ERROR_DELETE, sId, e);
+			if (!syllabusRepository.existsById((long) sId)) {
+				logger.warn(SyllabusConstant.LOG_DELETE_NON_EXISTENT, sId);
+				throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
+			} else {
+				throw new SyllabusServiceException(SyllabusConstant.ERROR_DELETE_SYLLABUS, HttpStatus.BAD_REQUEST);
+			}
 		}
 	}
 

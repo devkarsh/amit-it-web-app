@@ -21,7 +21,7 @@ public class Syllabus {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer sid;
+	private int sId;
 	
 	private String filePath;
 	private LocalDate uploadDate;
