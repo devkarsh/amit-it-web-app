@@ -12,22 +12,22 @@ import com.amitit.webapp.entity.Enquiry;
 @Service
 public class EnquaryServiceImpl implements EnquiryService {
 
-    @Autowired
-    private EnquiryRepository enquiryRepo;
+	@Autowired
+	private EnquiryRepository enquiryRepo;
 
-    @Override
-    public Enquiry saveEnquiry(Enquiry enquiry) {
-        return enquiryRepo.save(enquiry); 
-    }
+	@Override
+	public Enquiry saveEnquiry(Enquiry enquiry) {
+		return enquiryRepo.save(enquiry);
+	}
 
-    @Override
-    public List<Enquiry> getAllEnquiries() {
-        return enquiryRepo.findAll(); 
-    }
+	@Override
+	public List<Enquiry> getAllEnquiries() {
+		return enquiryRepo.findAll();
+	}
 
 	@Override
 	public void deleteEnquiryById(int id) {
-		  enquiryRepo.deleteById(id);
-		
+		enquiryRepo.deleteById(id);
+
 	}
 }

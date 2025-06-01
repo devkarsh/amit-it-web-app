@@ -1,5 +1,6 @@
 package com.amitit.webapp.Controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,34 +18,33 @@ import com.amitit.webapp.Service.EnquiryService;
 import com.amitit.webapp.entity.Enquiry;
 
 @RestController
-@RequestMapping("/api") 
+@RequestMapping("/api")
 
 public class EnquiryController {
-	
-	 private final EnquiryService enquiryService;
 
-	    @Autowired
-	    public  EnquiryController(EnquiryService enquiryService) {
-	        this.enquiryService = enquiryService;
-	    }
+	private final EnquiryService enquiryService;
 
-	   
-	    @PostMapping("enquiries")
-	    public ResponseEntity<Enquiry> saveEnquiry(@RequestBody Enquiry enquiry) {
-	    	return new ResponseEntity<>(enquiryService.saveEnquiry(enquiry), HttpStatus.CREATED);
-	    }
+	@Autowired
+	public EnquiryController(EnquiryService enquiryService) {
+		this.enquiryService = enquiryService;
+	}
 
-	    @GetMapping("enquiries")
-	    public ResponseEntity<List<Enquiry>> getAllEnquiries() {
-	    	return new ResponseEntity<>(enquiryService.getAllEnquiries(), HttpStatus.OK);
-	        
-	        
-	    }
-	    @DeleteMapping("enquiry/{id}")
-	    public ResponseEntity<String> deleteEnquiry(@PathVariable  int id) {
-	        enquiryService.deleteEnquiryById(id);
-	        return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	    }
+	@PostMapping("enquiries")
+	public ResponseEntity<Enquiry> saveEnquiry(@RequestBody Enquiry enquiry) {
+		enquiry.setEnquiryDate(LocalDate.now());
+		return new ResponseEntity<>(enquiryService.saveEnquiry(enquiry), HttpStatus.CREATED);
+	}
 
+	@GetMapping("enquiries")
+	public ResponseEntity<List<Enquiry>> getAllEnquiries() {
+		return new ResponseEntity<>(enquiryService.getAllEnquiries(), HttpStatus.OK);
+
+	}
+
+	@DeleteMapping("enquiry/{id}")
+	public ResponseEntity<String> deleteEnquiry(@PathVariable int id) {
+		enquiryService.deleteEnquiryById(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 
 }

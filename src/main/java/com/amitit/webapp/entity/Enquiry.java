@@ -1,5 +1,7 @@
 package com.amitit.webapp.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,7 @@ public class Enquiry {
 	private String email;
 	private String contact;
 	private String messege;
-	private String select_Course;
+	private LocalDate enquiryDate;
+	private String Course;
 
 }
-
