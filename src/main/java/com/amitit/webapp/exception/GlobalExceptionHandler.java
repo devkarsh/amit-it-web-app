@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-	@ExceptionHandler(CourseNotFoundException.class)
-public ResponseEntity handleException(CourseNotFoundException exception)
+	@ExceptionHandler(CourseServiceException.class)
+public ResponseEntity handleException(CourseServiceException exception)
 {
-	return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+	return new ResponseEntity(exception.getMessage(),exception.getHttpStatus());
 }
 
 	
 
 }
+
+
