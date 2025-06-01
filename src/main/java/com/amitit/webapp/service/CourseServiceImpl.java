@@ -2,7 +2,6 @@ package com.amitit.webapp.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.amitit.webapp.entity.Course;
 import com.amitit.webapp.entity.dto.CourseDto;
 import com.amitit.webapp.exception.CourseServiceException;
-import com.amitit.webapp.repository.CourseServiceRepo;
+import com.amitit.webapp.repository.CourseRepository;
 import com.amitit.webapp.util.Constant;
 import com.amitit.webapp.util.LogMessages;
 
@@ -21,9 +20,9 @@ public class CourseServiceImpl implements CourseService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
-	private final CourseServiceRepo serviceRepo;
+	private final CourseRepository serviceRepo;
 
-	public CourseServiceImpl(CourseServiceRepo serviceRepo) {
+	public CourseServiceImpl(CourseRepository serviceRepo) {
 		this.serviceRepo = serviceRepo;
 	}
 
