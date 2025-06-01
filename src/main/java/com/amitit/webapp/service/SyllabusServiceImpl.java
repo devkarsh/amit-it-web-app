@@ -24,49 +24,32 @@ public class SyllabusServiceImpl implements SyllabusService {
 	@Override
 	public void addSyllabus(Syllabus syllabus) {
 		logger.info(SyllabusConstant.LOG_ATTEMPT_ADD, syllabus);
-		try {
-			syllabusRepository.save(syllabus);
-			logger.info(SyllabusConstant.LOG_ADD_SUCCESS, syllabus.getSId());
-		} catch (Exception e) {
-			logger.error(SyllabusConstant.LOG_ERROR_SAVE, e);
-			throw new SyllabusServiceException(SyllabusConstant.ERROR_SAVE_SYLLABUS, HttpStatus.BAD_REQUEST);
-		}
+		syllabusRepository.save(syllabus);
+		logger.info(SyllabusConstant.LOG_ADD_SUCCESS, syllabus.getSId());
 	}
 
 	@Override
 	public Syllabus getSyllabus(int sId) {
 		logger.info(SyllabusConstant.LOG_ATTEMPT_RETRIEVE, sId);
-		try {
-			Optional<Syllabus> syllabusOptional = syllabusRepository.findById(sId);
-			if (syllabusOptional.isPresent()) {
-				Syllabus syllabus = syllabusOptional.get();
-				logger.info(SyllabusConstant.LOG_RETRIEVE_SUCCESS, sId, syllabus);
-				return syllabus;
-			} else {
-				logger.warn(SyllabusConstant.LOG_NOT_FOUND, sId);
-				throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
-			}
-		} catch (Exception e) {
-			logger.error(SyllabusConstant.LOG_ERROR_RETRIEVE, sId, e);
-			throw new SyllabusServiceException(SyllabusConstant.ERROR_RETRIEVE_SYLLABUS, HttpStatus.BAD_REQUEST);
+		Optional<Syllabus> syllabusOptional = syllabusRepository.findById(sId);
+		if (syllabusOptional.isPresent()) {
+			Syllabus syllabus = syllabusOptional.get();
+			logger.info(SyllabusConstant.LOG_RETRIEVE_SUCCESS, sId, syllabus);
+			return syllabus;
+		} else {
+			logger.warn(SyllabusConstant.LOG_NOT_FOUND, sId);
+			throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@Override
 	public void deleteSyllabus(int sId) {
 		logger.info(SyllabusConstant.LOG_ATTEMPT_DELETE, sId);
-		try {
-			syllabusRepository.deleteById(sId);
-			logger.info(SyllabusConstant.LOG_DELETE_SUCCESS, sId);
-		} catch (Exception e) {
-			logger.error(SyllabusConstant.LOG_ERROR_DELETE, sId, e);
-			if (!syllabusRepository.existsById( sId)) {
-				logger.warn(SyllabusConstant.LOG_DELETE_NON_EXISTENT, sId);
-				throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
-			} else {
-				throw new SyllabusServiceException(SyllabusConstant.ERROR_DELETE_SYLLABUS, HttpStatus.BAD_REQUEST);
-			}
+		if (!syllabusRepository.existsById(sId)) {
+			logger.warn(SyllabusConstant.LOG_DELETE_NON_EXISTENT, sId);
+			throw new SyllabusServiceException(SyllabusConstant.ERROR_SYLLABUS_NOT_FOUND, HttpStatus.NOT_FOUND);
 		}
+		syllabusRepository.deleteById(sId);
+		logger.info(SyllabusConstant.LOG_DELETE_SUCCESS, sId);
 	}
-
 }
