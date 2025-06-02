@@ -1,10 +1,14 @@
 package com.amitit.webapp.entity;
 
-import java.time.LocalDate;
-
-import jakarta.persistence.*;
-
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
@@ -15,7 +19,7 @@ public class Enrollment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name = "uid")
@@ -24,9 +28,6 @@ public class Enrollment {
 	@ManyToOne
 	@JoinColumn(name = "bid")
 	private Batch batch;
-	
-//	private LocalDate enrollmentDate;
-//	private String status;
 	
 
 }

@@ -20,7 +20,7 @@ public class Video {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long vid;
+	private int vid;
 	
 	private String name;
 	private LocalDate date;
