@@ -14,16 +14,15 @@ import com.amitit.webapp.entity.Course;
 import com.amitit.webapp.exception.CourseServiceException;
 import com.amitit.webapp.repository.CourseRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 
 public class CourseServiceImpl implements CourseService {
-	private static final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(CourseServiceImpl.class);
 
-
-
-	
 	private final CourseRepository serviceRepo;
-	
 
 	public CourseServiceImpl(CourseRepository serviceRepo) {
 		this.serviceRepo = serviceRepo;
@@ -32,30 +31,30 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public void addCourse(CourseDto dto) {
 		if (dto.getName() == null || dto.getName().trim().isEmpty() || dto.getDuration() == null
-				|| dto.getDuration().trim().isEmpty() || dto.getDiscription() == null
-				|| dto.getDiscription().trim().isEmpty()) {
+				|| dto.getDuration().trim().isEmpty() || dto.getDescription() == null
+				|| dto.getDescription().trim().isEmpty()) {
 			throw new CourseServiceException(CourseConstant.INVALID_INPUT, HttpStatus.BAD_REQUEST);
 		}
 		Course course = new Course();
 		course.setName(dto.getName());
 		course.setDuration(dto.getDuration());
 		serviceRepo.save(course);
-		logger.info(CourseConstant.COURSE_ADDED, dto.getName());
+		log.info(CourseConstant.COURSE_ADDED, dto.getName());
 	}
 
 	@Override
 	public CourseDto getCourse(int id) {
 		Course course = serviceRepo.findById(id).orElseThrow(() -> {
-			logger.warn(CourseConstant.COURSE_NOT_FOUND, id);
+			log.warn(CourseConstant.COURSE_NOT_FOUND, id);
 			return new CourseServiceException(CourseConstant.NOT_FOUND, HttpStatus.BAD_REQUEST);
 		});
 
 		CourseDto dto = new CourseDto();
-		dto.setDiscription(course.getDiscription());
+		dto.setDescription(course.getDescription());
 		dto.setDuration(course.getDuration());
 		dto.setName(course.getName());
 
-		logger.info(CourseConstant.COURSE_RETRIEVED, id);
+		log.info(CourseConstant.COURSE_RETRIEVED, id);
 		return dto;
 	}
 
@@ -68,7 +67,7 @@ public class CourseServiceImpl implements CourseService {
 		});
 
 		serviceRepo.deleteById(id);
-		logger.info(CourseConstant.COURSE_DELETED, id);
+		log.info(CourseConstant.COURSE_DELETED, id);
 	}
 
 	@Override
@@ -79,12 +78,12 @@ public class CourseServiceImpl implements CourseService {
 		for (Course course : courses) {
 			CourseDto dto = new CourseDto();
 			dto.setName(course.getName());
-			dto.setDiscription(course.getDiscription());
+			dto.setDescription(course.getDescription());
 			dto.setDuration(course.getDuration());
 			dtoList.add(dto);
 		}
 
-		logger.info(CourseConstant.COURSE_RETRIEVAL_INFO, dtoList.size());
+		log.info(CourseConstant.COURSE_RETRIEVAL_INFO, dtoList.size());
 		return dtoList;
 	}
 }

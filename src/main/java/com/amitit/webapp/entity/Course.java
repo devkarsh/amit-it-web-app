@@ -22,10 +22,10 @@ public class Course {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long cid;
+	private int cid;
 
 	private String name;
-	private String discription;
+	private String description;
 	private String duration;
 
 	@OneToOne(cascade = CascadeType.ALL)

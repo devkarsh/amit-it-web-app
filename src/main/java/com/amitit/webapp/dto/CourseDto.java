@@ -7,7 +7,7 @@ public class CourseDto {
 	private Long cid;
 
 	private String name;
-	private String discription;
+	private String description;
 	private String duration;
 
 }
