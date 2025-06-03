@@ -29,7 +29,7 @@ public class CourseController {
 		return new ResponseEntity(CourseConstant.COURSE_CREATED, HttpStatus.CREATED);
 	}
 
-	@GetMapping("{/id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<CourseDto> getCourse(@PathVariable("id") int id) {
 		CourseDto course = service.getCourse(id);
 		return new ResponseEntity(course, HttpStatus.OK);
