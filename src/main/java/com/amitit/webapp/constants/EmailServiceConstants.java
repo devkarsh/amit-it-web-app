@@ -1,6 +1,6 @@
 package com.amitit.webapp.constants;
 
-public class EmailLoggerMessages {
+public class EmailServiceConstants {
 
 	// EmailService
 	public static final String EMAIL_PREPARE = "Preparing to send email to: {}";
@@ -16,10 +16,15 @@ public class EmailLoggerMessages {
 	public static final String SENDING_EMAIL_TO = "Sending Email to: {}";
 	public static final String EMAIL_SENT_TO = "Email sent to: {}";
 
-	// EmaiControler
+	// EmailController
 	public static final String CONTROLER_REQUEST = "Request to send registration email to: {}";
 	public static final String CONTROLLER_SUCCESS = "Regitration Email sent successfully to user with id: {}";
+	public static final String CONTROLLER_REG_EMAIL = "Registration email send to: ";
 
-	private EmailLoggerMessages() {
+	// Exception Constants
+	public static final String EXCEPTION_USER_NOT_FOUND = "user not found :";
+	public static final String EXCEPTION_EMAIL_SEND_FAILED = "Failed to send email to: ";
+
+	private EmailServiceConstants() {
 	}
 }

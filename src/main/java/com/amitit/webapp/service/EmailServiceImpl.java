@@ -3,7 +3,7 @@ package com.amitit.webapp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.amitit.webapp.constants.EmailLoggerMessages;
+import com.amitit.webapp.constants.EmailServiceConstants;
 import com.amitit.webapp.entity.User;
 import com.amitit.webapp.exception.EmailServiceException;
 import com.amitit.webapp.repository.UserRepository;
@@ -23,16 +23,15 @@ public class EmailServiceImpl implements MessageService {
 
 	@Override
 	public void sendRegistrationEmail(int uid) throws EmailServiceException {
-		log.debug(EmailLoggerMessages.SENDING_REG_EMAIL, uid);
+		log.debug(EmailServiceConstants.SENDING_REG_EMAIL, uid);
 		User user = getUser(uid);
 
 		String subject = "Welcome to AMIT IT!";
 		String body = bodyBuilder(user);
-		log.debug(EmailLoggerMessages.EMAIL_SUBJECT, subject);
-		log.debug(EmailLoggerMessages.EMAIL_BODY, body);
-
+		log.debug(EmailServiceConstants.EMAIL_SUBJECT, subject);
+		log.debug(EmailServiceConstants.EMAIL_BODY, body);
 		send(user.getEmail(), subject, body);
-		log.info(EmailLoggerMessages.EMAIL_SENT_TO, user.getEmail());
+		log.info(EmailServiceConstants.EMAIL_SENT_TO, user.getEmail());
 	}
 
 	private String bodyBuilder(User user) throws EmailServiceException {
@@ -42,15 +41,15 @@ public class EmailServiceImpl implements MessageService {
 
 	private User getUser(int uid) throws EmailServiceException {
 
-		log.debug(EmailLoggerMessages.FETCHING_USER, uid);
+		log.debug(EmailServiceConstants.FETCHING_USER, uid);
 		return userRepository.findById(uid).orElseThrow(() -> {
-			log.warn(EmailLoggerMessages.USER_NOT_FOUND, uid);
-			return new EmailServiceException("user not found :" + uid);
+			log.warn(EmailServiceConstants.USER_NOT_FOUND, uid);
+			return new EmailServiceException(EmailServiceConstants.EXCEPTION_USER_NOT_FOUND + uid);
 		});
 	}
 
 	private void send(String recepient, String subject, String body) throws EmailServiceException {
-		log.debug(EmailLoggerMessages.SENDING_EMAIL_TO, recepient);
+		log.debug(EmailServiceConstants.SENDING_EMAIL_TO, recepient);
 		emailService.sendEmail(recepient, subject, body);
 	}
 }

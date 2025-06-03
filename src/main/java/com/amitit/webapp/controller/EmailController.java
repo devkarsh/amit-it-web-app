@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amitit.webapp.constants.EmailLoggerMessages;
+import com.amitit.webapp.constants.EmailServiceConstants;
 import com.amitit.webapp.exception.EmailServiceException;
 import com.amitit.webapp.service.MessageService;
 
@@ -22,14 +22,13 @@ public class EmailController {
 	@Autowired
 	MessageService messageService;
 
-
 	@PostMapping("/register/{uid}")
 	public ResponseEntity sendRegistrationEmail(@PathVariable int uid) throws EmailServiceException {
 
-		log.info(EmailLoggerMessages.CONTROLER_REQUEST, uid);
+		log.info(EmailServiceConstants.CONTROLER_REQUEST, uid);
 		messageService.sendRegistrationEmail(uid);
 
-		log.info(EmailLoggerMessages.CONTROLLER_SUCCESS, uid);
-		return new ResponseEntity<>("Registration email send to: " + uid, HttpStatus.OK);
+		log.info(EmailServiceConstants.CONTROLLER_SUCCESS, uid);
+		return new ResponseEntity<>(EmailServiceConstants.CONTROLLER_REG_EMAIL + uid, HttpStatus.OK);
 	}
 }
