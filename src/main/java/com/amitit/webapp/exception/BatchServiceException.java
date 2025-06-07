@@ -1,7 +1,16 @@
 package com.amitit.webapp.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class BatchServiceException extends RuntimeException {
-	public BatchServiceException(String message) {
-		super(message);
-	}
+    private final HttpStatus status;
+
+    public BatchServiceException(String message, HttpStatus status) {
+        super(message);
+        this.status = status;
+    }
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 }

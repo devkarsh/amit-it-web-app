@@ -1,8 +1,7 @@
 package com.amitit.webapp.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.amitit.webapp.constant.BatchConstant;
@@ -13,10 +12,11 @@ import com.amitit.webapp.exception.BatchServiceException;
 import com.amitit.webapp.repository.BatchRepository;
 import com.amitit.webapp.repository.CourseRepository;
 
-@Service
-public class BatchServiceImpl implements BatchService {
+import lombok.extern.slf4j.Slf4j;
 
-	private static final Logger logger = LoggerFactory.getLogger(BatchServiceImpl.class);
+@Service
+@Slf4j
+public class BatchServiceImpl implements BatchService {
 
 	@Autowired
 	private BatchRepository batchRepo;
@@ -26,42 +26,35 @@ public class BatchServiceImpl implements BatchService {
 
 	@Override
 	public Batch createBatch(BatchDto dto) {
+		log.info(BatchConstant.CREATING_BATCH, dto.getCourseId());
 
-		logger.info(BatchConstant.CREATING_BATCH, dto.getCourseId());
-		try {
-			Course course = courseRepo.findById(dto.getCourseId())
-					.orElseThrow(() -> new BatchServiceException(BatchConstant.COURSE_NOT_FOUND + dto.getCourseId()));
+		Course course = courseRepo.findById(dto.getCourseId())
+				.orElseThrow(() -> new BatchServiceException(BatchConstant.COURSE_NOT_FOUND + dto.getCourseId(),
+						HttpStatus.NOT_FOUND));
 
-			Batch batch = new Batch();
-			batch.setName(dto.getName());
-			batch.setStartDate(dto.getStartDate());
-			batch.setEndDate(dto.getEndDate());
-			batch.setTime(dto.getTime());
-			batch.setFees(dto.getFees());
-			batch.setSeats(dto.getSeats());
-			batch.setCourse(course);
-			Batch saved = batchRepo.save(batch);
-			logger.info(BatchConstant.BATCH_CREATED_LOG, saved.getBid());
-			return saved;
-		} catch (Exception e) {
-			logger.error(BatchConstant.BATCH_CREATION_FAILED + e.getMessage(), e);
-			throw new BatchServiceException(BatchConstant.BATCH_CREATION_FAILED + e.getMessage());
-		}
+		Batch batch = new Batch();
+		batch.setName(dto.getName());
+		batch.setStartDate(dto.getStartDate());
+		batch.setEndDate(dto.getEndDate());
+		batch.setTime(dto.getTime());
+		batch.setFees(dto.getFees());
+		batch.setSeats(dto.getSeats());
+		batch.setCourse(course);
 
+		Batch saved = batchRepo.save(batch);
+		log.info(BatchConstant.BATCH_CREATED_LOG, saved.getBid());
+		return saved;
 	}
 
 	@Override
 	public void deleteBatch(int id) {
-		logger.info(BatchConstant.DELETING_BATCH, id);
+		log.info(BatchConstant.DELETING_BATCH, id);
 
-		try {
-			Batch batch = batchRepo.findById(id)
-					.orElseThrow(() -> new BatchServiceException(BatchConstant.BATCH_NOT_FOUND + id));
-			batchRepo.delete(batch);
-			logger.info(BatchConstant.BATCH_DELETED_LOG, id);
-		} catch (Exception e) {
-			logger.error(BatchConstant.BATCH_DELETION_FAILED + e.getMessage(), e);
-			throw new BatchServiceException(BatchConstant.BATCH_DELETION_FAILED);
-		}
+		Batch batch = batchRepo.findById(id).orElseThrow(
+				() -> new BatchServiceException(BatchConstant.BATCH_NOT_FOUND.formatted(id), HttpStatus.NOT_FOUND));
+
+		batchRepo.delete(batch);
+		log.info(BatchConstant.BATCH_DELETED_LOG, id);
 	}
+
 }
