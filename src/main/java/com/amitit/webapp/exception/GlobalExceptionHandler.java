@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
 		errorDetails.put("timestamp", LocalDateTime.now());
 		errorDetails.put("status", ex.getHttpStatus().value());
 		errorDetails.put("error", ex.getHttpStatus().getReasonPhrase());
-		errorDetails.put("message", ex.getMessage()); // ✅ shows real error message
-		errorDetails.put("path", "/enrollments"); // Optional: set dynamically
+		errorDetails.put("message", ex.getMessage()); 
+		errorDetails.put("path", "/enrollments"); 
 
 		return new ResponseEntity<>(errorDetails, ex.getHttpStatus());
 	}
