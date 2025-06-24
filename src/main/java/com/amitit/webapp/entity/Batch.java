@@ -19,25 +19,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Batch {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long bid;
-	
+
 	private String name;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private String time;
 	private Double fees;
 	private Integer seats;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "course_id")
 	private Course course;
-	
+
 	@OneToMany(mappedBy = "batch")
 	private List<Video> videos;
-	
+
 	@OneToMany(mappedBy = "batch")
 	private List<Enrollment> enrollments;
 
